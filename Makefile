@@ -23,5 +23,6 @@ run: bin/CustomRunnerExecutor $(IMAGE_NAME)
 	@$(call check_defined,REPO)
 	@$(call check_defined,EXECUTOR)
 	@export GITHUB_TOKEN=$(GITHUB_TOKEN)
-	bin/CustomRunnerExecutor $(REPO) $(EXECUTOR)
+	echo $$GITHUB_TOKEN
+	bin/CustomRunnerExecutor $(REPO) $(EXECUTOR) $(RUNNER_HOSTNAME)
 	

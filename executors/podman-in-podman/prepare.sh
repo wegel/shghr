@@ -16,7 +16,13 @@ container_name="github-runner-${github_job_id}-${github_run_attempt}"
 
 podman rm --force ${container_name} || true >/dev/null
 
-podman run -td --security-opt label=disable \
+PODMAN_OTHER_OPTS=
+if [ -n "${RUNNER_HOSTNAME:-}" ]; then
+  echo "Setting hostname to ${RUNNER_HOSTNAME}"
+  PODMAN_OTHER_OPTS="-h ${RUNNER_HOSTNAME}"
+fi
+
+podman run -td ${PODMAN_OTHER_OPTS} --security-opt label=disable \
   --device /dev/net/tun --device /dev/fuse \
   --user podman --name ${container_name} \
   -v $(pwd)/fake-docker:/usr/bin/docker \
